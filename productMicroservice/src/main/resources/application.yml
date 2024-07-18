@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: product
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/abolfazl
+    username: root
+    password: Am@0311865186
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+server:
+  port: 8080
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+  instance:
+    lease-expiration-duration-in-seconds: 20
+    lease-renewal-interval-in-seconds: 5
+    registry-fetch-interval-seconds: 5

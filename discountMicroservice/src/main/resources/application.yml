@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: discount
+  datasource:
+    url: jdbc:mysql://localhost:3306/abolfazl
+    username: root
+    password: Am@0311865186
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+
+server:
+  port: 8081
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    lease-renewal-interval-in-seconds: 5
+    lease-expiration-duration-in-seconds: 20
+    registry-fetch-interval-seconds: 5
