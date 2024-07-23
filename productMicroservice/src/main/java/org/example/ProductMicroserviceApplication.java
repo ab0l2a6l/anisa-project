@@ -14,14 +14,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.client.ReactorResourceFactory;
-import org.springframework.http.client.reactive.JettyClientHttpConnector;
-import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.netty.http.client.HttpClient;
 
-import java.util.concurrent.TimeUnit;
 
 @SpringBootApplication
 @EnableFeignClients(basePackages = {"org.example"})
@@ -42,11 +38,10 @@ public class ProductMicroserviceApplication {
     }
 
     @Bean
-    public RestClient restClient() {
+    @LoadBalanced
+    public RestClient.Builder restClient() {
 
-        return RestClient.builder()
-                .requestFactory(new HttpComponentsClientHttpRequestFactory())
-                .build();
+        return RestClient.builder();
     }
 
     @Bean
@@ -55,11 +50,6 @@ public class ProductMicroserviceApplication {
         factory.setUseGlobalResources(false);
         return factory;
     }
-//    @Bean
-//    @LoadBalanced
-//    public WebClient webClient() {
-//        return WebClient.builder().build();
-//    }
 
     @Bean
     @LoadBalanced

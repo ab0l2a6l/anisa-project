@@ -32,18 +32,25 @@ public class ProductServiceImpl implements ProductService {
     private final ModelMapper mapper;
     private final LoggerClient loggerClient;
     private final CouponClient couponClient;
-    private final RestClient restClient;
+    private final RestClient.Builder restClient;
     private final WebClient.Builder webClient;
 
     @Override
     public ProductResponse createProduct(ProductRequest productRequest) {
         Product product = mapper.map(productRequest, Product.class);
-//        Coupon coupon = restTemplate.getForObject("http://DISCOUNT/api/v1/discount/{code}", Coupon.class, product.getCode());
-        CouponDTO couponDTO =  Objects.requireNonNull(webClient.build().get()
-                .uri("http://DISCOUNT/api/v1/coupon/find/{code}", product.getCode())
-                .retrieve().toEntity(CouponDTO.class).block()).getBody();
+
+        CouponDTO couponDTO = restTemplate.getForObject("http://DISCOUNT/api/v1/coupon/find/{code}", CouponDTO.class, product.getCode());
+
+//        CouponDTO couponDTO =  Objects.requireNonNull(webClient.build().get()
+//                .uri("http://DISCOUNT/api/v1/coupon/find/{code}", product.getCode())
+//                .retrieve().toEntity(CouponDTO.class).block()).getBody();
+
+
+//        CouponDTO couponDTO = restClient.build().get().uri("http://DISCOUNT/api/v1/coupon/find/{code}", product.getCode())
+//                .retrieve().toEntity(CouponDTO.class).getBody();
 
 //        CouponDTO couponDTO = couponClient.findByCode(product.getCode());
+
         BigDecimal subtract = new BigDecimal("100").subtract(couponDTO.getDiscount());
         product.setPrice(subtract.multiply(product.getPrice()).divide(new BigDecimal("100")));
 
