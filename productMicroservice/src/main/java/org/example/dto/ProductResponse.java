@@ -13,4 +13,14 @@ public class ProductResponse {
     private BigDecimal price;
 
     private String code;
+
+    @Override
+    public String toString() {
+        return "ProductResponse{" +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                ", code='" + code + '\'' +
+                '}';
+    }
 }

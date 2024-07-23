@@ -7,10 +7,10 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>productMicroservice</artifactId>
+    <artifactId>notificationMicroservice</artifactId>
     <packaging>jar</packaging>
 
-    <name>productMicroservice</name>
+    <name>notificationMicroservice</name>
     <url>http://maven.apache.org</url>
 
     <properties>
@@ -37,25 +37,6 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.modelmapper</groupId>
-            <artifactId>modelmapper</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.example</groupId>
-            <artifactId>clients</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>
     </dependencies>
 </project>

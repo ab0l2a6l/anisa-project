@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: notification
+  datasource:
+    url: jdbc:mysql://localhost:3306/abolfazl
+    username: root
+    password: Am@0311865186
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true

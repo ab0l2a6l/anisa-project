@@ -1,6 +1,8 @@
 spring:
   application:
     name: product
+  main:
+    allow-bean-definition-overriding: true
 
   datasource:
     url: jdbc:mysql://localhost:3306/abolfazl
@@ -9,10 +11,10 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     show-sql: true
 server:
-  port: 8080
+  port: 8082
 eureka:
   client:
     service-url:
