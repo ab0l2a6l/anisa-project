@@ -11,6 +11,7 @@ import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClient;
 import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClients;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.client.ReactorResourceFactory;
 import org.springframework.http.client.reactive.JettyClientHttpConnector;
@@ -54,10 +55,16 @@ public class ProductMicroserviceApplication {
         factory.setUseGlobalResources(false);
         return factory;
     }
+//    @Bean
+//    @LoadBalanced
+//    public WebClient webClient() {
+//        return WebClient.builder().build();
+//    }
+
     @Bean
     @LoadBalanced
-    public WebClient webClient() {
-        return WebClient.builder().baseUrl("http://DISCOUNT/").build();
+    public WebClient.Builder lbWebClient() {
+        return WebClient.builder();
     }
 
 }
