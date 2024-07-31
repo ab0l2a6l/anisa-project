@@ -1,7 +1,11 @@
 spring:
   application:
     name: gateway
-
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
 server:
   port: 7071
 
@@ -16,3 +20,24 @@ eureka:
     lease-expiration-duration-in-seconds: 20
     lease-renewal-interval-in-seconds: 5
     registry-fetch-interval-seconds: 5
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    gateway:
+      enabled: true
+  info:
+    env:
+      enabled: true
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        sliding-window-size: 10
+        permitted-number-of-calls-in-half-open-state: 3
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 10000
+

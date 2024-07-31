@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.CouponRequest;
 import org.example.dto.CouponResponse;
@@ -22,7 +23,12 @@ public class CouponController {
     }
 
     @GetMapping("/find/{code}")
+    @CircuitBreaker(name = "myClient", fallbackMethod = "findByCodeFallBack")
     public ResponseEntity<CouponResponse> findByCode(@PathVariable("code") String code) throws NotFoundCoupon {
         return ResponseEntity.ok(mapper.map(couponService.findByCode(code), CouponResponse.class));
+    }
+
+    public ResponseEntity<CouponResponse> findByCodeFallBack(String code, Throwable throwable) {
+        return ResponseEntity.ok(new CouponResponse());
     }
 }

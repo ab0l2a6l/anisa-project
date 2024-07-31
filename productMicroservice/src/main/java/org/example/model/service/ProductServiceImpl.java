@@ -1,5 +1,7 @@
 package org.example.model.service;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import org.example.discount.CouponClient;
 import org.example.discount.CouponDTO;
 import org.example.notification.LoggerClient;
@@ -12,6 +14,7 @@ import org.example.exception.NotFoundProduct;
 import org.example.model.entity.Coupon;
 import org.example.model.entity.Product;
 import org.example.model.repository.ProductRepository;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
@@ -30,29 +33,32 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final RestTemplate restTemplate;
     private final ModelMapper mapper;
+
+    @Qualifier("org.example.notification.LoggerClient")
     private final LoggerClient loggerClient;
+
+    @Qualifier("org.example.discount.CouponClient")
     private final CouponClient couponClient;
     private final RestClient.Builder restClient;
     private final WebClient.Builder webClient;
 
     @Override
+    @CircuitBreaker(name = "myClient", fallbackMethod = "createProductFallBack")
     public ProductResponse createProduct(ProductRequest productRequest) {
         Product product = mapper.map(productRequest, Product.class);
-
-        CouponDTO couponDTO = restTemplate.getForObject("http://DISCOUNT/api/v1/coupon/find/{code}", CouponDTO.class, product.getCode());
-
+//        CouponDTO couponDTO = restTemplate.getForObject("http://DISCOUNT/api/v1/coupon/find/{code}", CouponDTO.class, product.getCode());
 //        CouponDTO couponDTO =  Objects.requireNonNull(webClient.build().get()
 //                .uri("http://DISCOUNT/api/v1/coupon/find/{code}", product.getCode())
 //                .retrieve().toEntity(CouponDTO.class).block()).getBody();
-
-
 //        CouponDTO couponDTO = restClient.build().get().uri("http://DISCOUNT/api/v1/coupon/find/{code}", product.getCode())
 //                .retrieve().toEntity(CouponDTO.class).getBody();
 
-//        CouponDTO couponDTO = couponClient.findByCode(product.getCode());
+        CouponDTO couponDTO = couponClient.findByCode(product.getCode());
 
-        BigDecimal subtract = new BigDecimal("100").subtract(couponDTO.getDiscount());
-        product.setPrice(subtract.multiply(product.getPrice()).divide(new BigDecimal("100")));
+        if (couponDTO.getDiscount() != null) {
+            BigDecimal subtract = new BigDecimal("100").subtract(couponDTO.getDiscount());
+            product.setPrice(subtract.multiply(product.getPrice()).divide(new BigDecimal("100")));
+        }
 
         ProductResponse productResponse = mapper.map(productRepository.save(product), ProductResponse.class);
 
@@ -62,6 +68,9 @@ public class ProductServiceImpl implements ProductService {
         logger.setLocalDateTime(LocalDateTime.now());
         createLog(logger);
         return productResponse;
+    }
+    public ProductResponse createProductFallBack(Throwable throwable) {
+        return new ProductResponse();
     }
 
     @Override

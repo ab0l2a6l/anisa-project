@@ -1,18 +1,11 @@
 package org.example;
 
-import io.netty.channel.ChannelOption;
-import io.netty.handler.timeout.ReadTimeoutHandler;
-import io.netty.handler.timeout.WriteTimeoutHandler;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
-import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClient;
-import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClients;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Primary;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.client.ReactorResourceFactory;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestTemplate;

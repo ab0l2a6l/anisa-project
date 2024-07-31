@@ -24,3 +24,13 @@ eureka:
     lease-expiration-duration-in-seconds: 20
     lease-renewal-interval-in-seconds: 5
     registry-fetch-interval-seconds: 5
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      myClient:
+        register-health-indicator: true
+        sliding-window-size: 10
+        minimum-number-of-calls: 3
+        wait-duration-in-open-state: 10000
+        failure-rate-threshold: 50
