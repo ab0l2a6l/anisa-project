@@ -1,7 +1,7 @@
 package org.example.model.service;
 
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
+import lombok.extern.slf4j.Slf4j;
 import org.example.discount.CouponClient;
 import org.example.discount.CouponDTO;
 import org.example.notification.LoggerClient;
@@ -11,11 +11,9 @@ import org.modelmapper.ModelMapper;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.ProductRequest;
 import org.example.exception.NotFoundProduct;
-import org.example.model.entity.Coupon;
 import org.example.model.entity.Product;
 import org.example.model.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestTemplate;
@@ -28,6 +26,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
@@ -43,13 +42,24 @@ public class ProductServiceImpl implements ProductService {
     private final WebClient.Builder webClient;
 
     @Override
-    @CircuitBreaker(name = "myClient", fallbackMethod = "createProductFallBack")
-    public ProductResponse createProduct(ProductRequest productRequest) {
+    @Retry(name = "createProductRetry", fallbackMethod = "createProductFallBack")
+//    @CircuitBreaker(name = "myClient", fallbackMethod = "createProductFallBack") // priority circuitBreaker greater than Retry
+    public ProductResponse createProduct(ProductRequest productRequest) throws NotFoundProduct {
+
+        log.info("invoke createProduct");
+
         Product product = mapper.map(productRequest, Product.class);
+        if (true)
+            throw new NotFoundProduct("fsdf");
+//  RestTemplate
 //        CouponDTO couponDTO = restTemplate.getForObject("http://DISCOUNT/api/v1/coupon/find/{code}", CouponDTO.class, product.getCode());
+
+//  WebClient
 //        CouponDTO couponDTO =  Objects.requireNonNull(webClient.build().get()
 //                .uri("http://DISCOUNT/api/v1/coupon/find/{code}", product.getCode())
 //                .retrieve().toEntity(CouponDTO.class).block()).getBody();
+
+//  RestClient
 //        CouponDTO couponDTO = restClient.build().get().uri("http://DISCOUNT/api/v1/coupon/find/{code}", product.getCode())
 //                .retrieve().toEntity(CouponDTO.class).getBody();
 
@@ -70,6 +80,7 @@ public class ProductServiceImpl implements ProductService {
         return productResponse;
     }
     public ProductResponse createProductFallBack(Throwable throwable) {
+        log.info("invoke createProductFallBack");
         return new ProductResponse();
     }
 
