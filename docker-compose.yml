@@ -6,6 +6,10 @@ services:
     ports:
       - "7071:7071"
 
+    deploy:
+      resources:
+        limits:
+          memory: 512m
   mysql:
     image: mysql
     container_name: mysqlDB
@@ -15,12 +19,21 @@ services:
       username: root
       MYSQL_ROOT_PASSWORD: Am@0311865186
       url: jdbc:mysql://mysql:3306/abolfazl
-
+    deploy:
+      resources:
+        limits:
+          memory: 512m
   eureka:
     image: eureka
     ports:
       - "8761:8761"
     container_name: eureka
+    deploy:
+      resources:
+        limits:
+          memory: 512m
+#    networks:
+#      - spring
 
   product:
     image: prodouct
@@ -30,7 +43,12 @@ services:
     depends_on: [mysql, eureka]
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-
+    deploy:
+      resources:
+        limits:
+          memory: 512m
+#    networks:
+     #      - spring
   discount:
     image: discount
     ports:
@@ -39,7 +57,12 @@ services:
     depends_on: [mysql, eureka]
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-
+    deploy:
+      resources:
+        limits:
+          memory: 512m
+      #    networks:
+      #      - spring
   notification:
     image: notification
     ports:
@@ -48,7 +71,12 @@ services:
     depends_on: [mysql, eureka]
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-
+    deploy:
+      resources:
+        limits:
+          memory: 512m
+      #    networks:
+      #      - spring
   clients:
     image: clients
     ports:
@@ -57,3 +85,14 @@ services:
     depends_on: [mysql, eureka]
     environment:
       - SPRING_PROFILES_ACTIVE=docker
+    deploy:
+      resources:
+        limits:
+          memory: 512m
+      #    networks:
+      #      - spring
+
+#networks:
+#  default:
+#  spring:
+#    driver: bridge
