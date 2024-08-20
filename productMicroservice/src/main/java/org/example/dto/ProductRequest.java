@@ -1,6 +1,7 @@
 package org.example.dto;
 
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 
 import java.math.BigDecimal;

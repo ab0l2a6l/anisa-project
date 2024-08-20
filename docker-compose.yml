@@ -1,0 +1,59 @@
+version: "3"
+services:
+  gateway:
+    image: gateway
+    container_name: gateway
+    ports:
+      - "7071:7071"
+
+  mysql:
+    image: mysql
+    container_name: mysqlDB
+    ports:
+      - "3307:3306"
+    environment:
+      username: root
+      MYSQL_ROOT_PASSWORD: Am@0311865186
+      url: jdbc:mysql://mysql:3306/abolfazl
+
+  eureka:
+    image: eureka
+    ports:
+      - "8761:8761"
+    container_name: eureka
+
+  product:
+    image: prodouct
+    ports:
+      - "8082:8082"
+    container_name: product
+    depends_on: [mysql, eureka]
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+
+  discount:
+    image: discount
+    ports:
+      - "8081:8081"
+    container_name: discount
+    depends_on: [mysql, eureka]
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+
+  notification:
+    image: notification
+    ports:
+      - "8080:8080"
+    container_name: notification
+    depends_on: [mysql, eureka]
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+
+  clients:
+    image: clients
+    ports:
+      - "8084:8084"
+    container_name: clients
+    depends_on: [mysql, eureka]
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker

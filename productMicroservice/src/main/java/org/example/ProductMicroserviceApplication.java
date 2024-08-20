@@ -13,7 +13,9 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 
 @SpringBootApplication
-@EnableFeignClients(basePackages = {"org.example"})
+@EnableFeignClients(
+        basePackages = {"org.example.notification", "org.example.discount"}
+)
 public class ProductMicroserviceApplication {
     public static void main(String[] args) {
         SpringApplication.run(ProductMicroserviceApplication.class, args);

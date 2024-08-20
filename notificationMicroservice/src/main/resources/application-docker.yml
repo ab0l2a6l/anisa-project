@@ -2,7 +2,7 @@ spring:
   application:
     name: notification
   datasource:
-    url: jdbc:mysql://localhost:3306/abolfazl
+    url: jdbc:mysql://mysql:3306/abolfazl
     username: root
     password: Am@0311865186
   jpa:
@@ -10,3 +10,4 @@ spring:
       ddl-auto: update
     show-sql: true
     database-platform: org.hibernate.dialect.MySQLDialect
+

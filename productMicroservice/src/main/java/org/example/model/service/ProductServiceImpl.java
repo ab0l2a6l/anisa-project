@@ -8,12 +8,10 @@ import org.example.notification.LoggerClient;
 import org.example.dto.ProductResponse;
 import org.example.notification.LoggerDTO;
 import org.modelmapper.ModelMapper;
-import lombok.RequiredArgsConstructor;
 import org.example.dto.ProductRequest;
 import org.example.exception.NotFoundProduct;
 import org.example.model.entity.Product;
 import org.example.model.repository.ProductRepository;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestTemplate;
@@ -21,11 +19,9 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 @Slf4j
 public class ProductServiceImpl implements ProductService {
 
@@ -33,13 +29,21 @@ public class ProductServiceImpl implements ProductService {
     private final RestTemplate restTemplate;
     private final ModelMapper mapper;
 
-    @Qualifier("org.example.notification.LoggerClient")
     private final LoggerClient loggerClient;
 
-    @Qualifier("org.example.discount.CouponClient")
     private final CouponClient couponClient;
     private final RestClient.Builder restClient;
     private final WebClient.Builder webClient;
+
+    public ProductServiceImpl(ProductRepository productRepository, RestTemplate restTemplate, ModelMapper mapper, LoggerClient loggerClient, CouponClient couponClient, RestClient.Builder restClient, WebClient.Builder webClient) {
+        this.productRepository = productRepository;
+        this.restTemplate = restTemplate;
+        this.mapper = mapper;
+        this.loggerClient = loggerClient;
+        this.couponClient = couponClient;
+        this.restClient = restClient;
+        this.webClient = webClient;
+    }
 
     @Override
     @Retry(name = "createProductRetry", fallbackMethod = "createProductFallBack")

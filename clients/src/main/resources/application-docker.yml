@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: feignClient
+
+server:
+  port: 8084
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka:8761/eureka
+
+  instance:
+    lease-expiration-duration-in-seconds: 20
+    lease-renewal-interval-in-seconds: 5
+    registry-fetch-interval-seconds: 5

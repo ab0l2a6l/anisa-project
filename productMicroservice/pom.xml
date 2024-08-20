@@ -6,7 +6,6 @@
         <artifactId>anisaProject</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-
     <artifactId>productMicroservice</artifactId>
     <packaging>jar</packaging>
 
@@ -42,17 +41,15 @@
             <groupId>org.modelmapper</groupId>
             <artifactId>modelmapper</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-        </dependency>
-
+<!--        <dependency>-->
+<!--            <groupId>org.springdoc</groupId>-->
+<!--            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>org.example</groupId>
             <artifactId>clients</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux</artifactId>
@@ -66,4 +63,32 @@
             <artifactId>resilience4j-circuitbreaker</artifactId>
         </dependency>
     </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>
+                                repackage
+                            </goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>com.google.cloud.tools</groupId>-->
+<!--                <artifactId>jib-maven-plugin</artifactId>-->
+<!--                <version>3.4.2</version>-->
+<!--                <configuration>-->
+<!--                    <to>-->
+<!--                        <image>product</image>-->
+<!--                    </to>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
+        </plugins>
+        <finalName>productMicroservice</finalName>
+    </build>
 </project>

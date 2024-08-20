@@ -1,31 +1,32 @@
 spring:
   application:
-    name: discount
+    name: product
   main:
     allow-bean-definition-overriding: true
 
   datasource:
-    url: jdbc:mysql://localhost:3306/abolfazl
+    url: jdbc:mysql://mysql:3306/abolfazl
     username: root
     password: Am@0311865186
     driver-class-name: com.mysql.jdbc.Driver
 
   jpa:
-    database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQLDialect
     show-sql: true
 
 server:
-  port: 8081
+  port: 8082
 
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: http://eureka:8761/eureka
+
   instance:
-    lease-renewal-interval-in-seconds: 5
     lease-expiration-duration-in-seconds: 20
+    lease-renewal-interval-in-seconds: 5
     registry-fetch-interval-seconds: 5
 
 resilience4j:
@@ -37,14 +38,16 @@ resilience4j:
         minimum-number-of-calls: 3
         wait-duration-in-open-state: 10000
         failure-rate-threshold: 50
-      mm:
-        register-health-indicator: true
-        sliding-window-size: 10
-        minimum-number-of-calls: 3
-        wait-duration-in-open-state: 10000
-        failure-rate-threshold: 50
+  retry:
+    configs:
+      default:
+        max-attempts: 3
+        wait-duration: 100
+        enable-exponential-backoff: true
+        exponential-backoff-multiplier: 2
+
 info:
   app:
-    name: "discount"
-    description: "discount service "
+    name: "product"
+    description: "product service "
     version: "1.0"
