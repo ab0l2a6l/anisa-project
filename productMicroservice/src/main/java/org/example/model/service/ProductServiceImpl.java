@@ -12,7 +12,10 @@ import org.example.dto.ProductRequest;
 import org.example.exception.NotFoundProduct;
 import org.example.model.entity.Product;
 import org.example.model.repository.ProductRepository;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -35,7 +38,7 @@ public class ProductServiceImpl implements ProductService {
     private final RestClient.Builder restClient;
     private final WebClient.Builder webClient;
 
-    public ProductServiceImpl(ProductRepository productRepository, RestTemplate restTemplate, ModelMapper mapper, LoggerClient loggerClient, CouponClient couponClient, RestClient.Builder restClient, WebClient.Builder webClient) {
+    public ProductServiceImpl(ProductRepository productRepository, RestTemplate restTemplate, ModelMapper mapper, @Qualifier("org.example.notification.LoggerClient") LoggerClient loggerClient, @Qualifier("org.example.discount.CouponClient") CouponClient couponClient, RestClient.Builder restClient, WebClient.Builder webClient) {
         this.productRepository = productRepository;
         this.restTemplate = restTemplate;
         this.mapper = mapper;
@@ -83,6 +86,7 @@ public class ProductServiceImpl implements ProductService {
         createLog(logger);
         return productResponse;
     }
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public ProductResponse createProductFallBack(Throwable throwable) {
         log.info("invoke createProductFallBack");
         return new ProductResponse();
