@@ -19,10 +19,14 @@ services:
       username: root
       MYSQL_ROOT_PASSWORD: Am@0311865186
       url: jdbc:mysql://mysql:3306/abolfazl
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     deploy:
       resources:
         limits:
           memory: 512m
+
+
   eureka:
     image: eureka
     ports:

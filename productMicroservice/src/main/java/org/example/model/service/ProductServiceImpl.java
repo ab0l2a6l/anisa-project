@@ -86,7 +86,7 @@ public class ProductServiceImpl implements ProductService {
         createLog(logger);
         return productResponse;
     }
-    @Transactional(isolation = Isolation.SERIALIZABLE)
+//    @Transactional(isolation = Isolation.SERIALIZABLE)
     public ProductResponse createProductFallBack(Throwable throwable) {
         log.info("invoke createProductFallBack");
         return new ProductResponse();
